@@ -7,11 +7,11 @@ namespace backend\models;
  *
  * @property int $id Идентификатор
  * @property int $color_id Цвет
- * @property string $created_at Дата и время появления
- * @property string|null $fall_at Дата и время падения
+ * @property int $created_at Дата и время появления
+ * @property int|null $fall_at Дата и время падения
  * @property int $status_id Статус
- * @property float|null $percent_eat Съели (%)
- * @property int|null $state_id Состояние
+ * @property float $percent_eat Съели (%)
+ * @property int $state_id Состояние
  *
  * @property Colors $color
  * @property States $state
@@ -19,6 +19,12 @@ namespace backend\models;
  */
 class Apples extends \yii\db\ActiveRecord
 {
+    const MIN_GEN = 3;
+    const MAX_GEN = 10;
+
+    const MIN_CREATE_AT = '01.01.2023';
+    const MAX_CREATE_AT = 'now';
+
     /**
      * {@inheritdoc}
      */
@@ -33,9 +39,8 @@ class Apples extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['color_id', 'status_id'], 'required'],
-            [['color_id', 'status_id', 'state_id'], 'integer'],
-            [['created_at', 'fall_at'], 'safe'],
+            [['color_id', 'created_at', 'status_id', 'state_id'], 'required'],
+            [['color_id', 'created_at', 'fall_at', 'status_id', 'state_id'], 'integer'],
             [['percent_eat'], 'number'],
             [
                 ['color_id'],
@@ -105,5 +110,23 @@ class Apples extends \yii\db\ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(Statuses::class, ['id' => 'status_id']);
+    }
+
+    public static function generate(): void
+    {
+        $colors = Colors::getColorList();
+
+        $countApples = rand(self::MIN_GEN, self::MAX_GEN);
+
+        for ($i = 0; $i < $countApples; $i++) {
+            $model = new Apples();
+
+            $model->color_id = array_rand($colors);
+            $model->created_at = rand(strtotime(self::MIN_CREATE_AT), strtotime(self::MAX_CREATE_AT));
+            $model->status_id = Statuses::ON_TREE;
+            $model->state_id = States::ON_TREE;
+
+            $model->save();
+        }
     }
 }

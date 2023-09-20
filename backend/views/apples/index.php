@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Добавить яблоко', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Сгенерировать яблоки', ['generate'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -32,12 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'color_id',
-            'created_at',
+            'color.name',
+            [
+                'attribute' => 'created_at',
+                'format' => ['date', 'php:d.m.Y H:i:s'],
+            ],
             'fall_at',
-            'status_id',
+            'status.name',
             'percent_eat',
-            'state_id',
+            'state.name',
             [
                 'class' => ActionColumn::class,
                 'urlCreator' => function ($action, Apples $model, $key, $index, $column) {

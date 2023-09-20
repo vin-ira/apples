@@ -12,16 +12,16 @@ class m230920_083534_add_data_to_tables extends Migration
      */
     public function safeUp()
     {
-        $this->insert('colors', ['color' => 'зеленый']);
-        $this->insert('colors', ['color' => 'желтый']);
-        $this->insert('colors', ['color' => 'красный']);
+        $this->insert('colors', ['name' => 'зеленый']);
+        $this->insert('colors', ['name' => 'желтый']);
+        $this->insert('colors', ['name' => 'красный']);
 
-        $this->insert('states', ['state' => 'висит на дереве']);
-        $this->insert('states', ['state' => 'упало/лежит на земле']);
-        $this->insert('states', ['state' => 'гнилое яблоко']);
+        $this->insert('states', ['name' => 'висит на дереве']);
+        $this->insert('states', ['name' => 'упало/лежит на земле']);
+        $this->insert('states', ['name' => 'гнилое яблоко']);
 
-        $this->insert('statuses', ['status' => 'на дереве']);
-        $this->insert('statuses', ['status' => 'упало']);
+        $this->insert('statuses', ['name' => 'на дереве']);
+        $this->insert('statuses', ['name' => 'упало']);
     }
 
     /**

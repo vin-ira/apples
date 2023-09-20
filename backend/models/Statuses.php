@@ -6,12 +6,14 @@ namespace backend\models;
  * This is the model class for table "statuses".
  *
  * @property int $id Идентификатор
- * @property string $status Статус
+ * @property string $name Статус
  *
  * @property Apples[] $apples
  */
 class Statuses extends \yii\db\ActiveRecord
 {
+    const ON_TREE = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -26,9 +28,9 @@ class Statuses extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'required'],
-            [['status'], 'string', 'max' => 255],
-            [['status'], 'unique'],
+            [['name'], 'required'],
+            [['name'], 'string', 'max' => 255],
+            [['name'], 'unique'],
         ];
     }
 
@@ -39,7 +41,7 @@ class Statuses extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Идентификатор',
-            'status' => 'Статус',
+            'name' => 'Статус',
         ];
     }
 

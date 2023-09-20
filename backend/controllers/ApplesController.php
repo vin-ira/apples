@@ -116,6 +116,13 @@ class ApplesController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionGenerate()
+    {
+        Apples::generate();
+
+        return $this->redirect(['index']);
+    }
+
     /**
      * Finds the Apples model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

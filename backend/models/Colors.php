@@ -6,7 +6,7 @@ namespace backend\models;
  * This is the model class for table "colors".
  *
  * @property int $id Идентификатор
- * @property string $color Цвет
+ * @property string $name Цвет
  *
  * @property Apples[] $apples
  */
@@ -26,9 +26,9 @@ class Colors extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['color'], 'required'],
-            [['color'], 'string', 'max' => 255],
-            [['color'], 'unique'],
+            [['name'], 'required'],
+            [['name'], 'string', 'max' => 255],
+            [['name'], 'unique'],
         ];
     }
 
@@ -39,7 +39,7 @@ class Colors extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Идентификатор',
-            'color' => 'Цвет',
+            'name' => 'Цвет',
         ];
     }
 
@@ -51,5 +51,15 @@ class Colors extends \yii\db\ActiveRecord
     public function getApples()
     {
         return $this->hasMany(Apples::class, ['color_id' => 'id']);
+    }
+
+    public static function getColorList(): array
+    {
+        return self::find()
+            ->select('name')
+            ->indexBy('id')
+            ->orderBy('name')
+            ->asArray()
+            ->column();
     }
 }

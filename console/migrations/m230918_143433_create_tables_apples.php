@@ -16,7 +16,7 @@ class m230918_143433_create_tables_apples extends Migration
             'colors',
             [
                 'id' => $this->primaryKey()->comment('Идентификатор'),
-                'color' => $this->string()->notNull()->unique()->comment('Цвет'),
+                'name' => $this->string()->notNull()->unique()->comment('Цвет'),
             ]
         );
 
@@ -24,7 +24,7 @@ class m230918_143433_create_tables_apples extends Migration
             'statuses',
             [
                 'id' => $this->primaryKey()->comment('Идентификатор'),
-                'status' => $this->string()->notNull()->unique()->comment('Статус'),
+                'name' => $this->string()->notNull()->unique()->comment('Статус'),
             ]
         );
 
@@ -32,7 +32,7 @@ class m230918_143433_create_tables_apples extends Migration
             'states',
             [
                 'id' => $this->primaryKey()->comment('Идентификатор'),
-                'state' => $this->string()->notNull()->unique()->comment('Состояние'),
+                'name' => $this->string()->notNull()->unique()->comment('Состояние'),
             ]
         );
 
@@ -41,11 +41,11 @@ class m230918_143433_create_tables_apples extends Migration
             [
                 'id' => $this->primaryKey()->comment('Идентификатор'),
                 'color_id' => $this->integer()->notNull()->comment('Цвет'),
-                'created_at' => $this->timestamp()->notNull()->comment('Дата и время появления'),
-                'fall_at' => $this->timestamp()->null()->comment('Дата и время падения'),
+                'created_at' => $this->integer()->notNull()->comment('Дата и время появления'),
+                'fall_at' => $this->integer()->null()->comment('Дата и время падения'),
                 'status_id' => $this->integer()->notNull()->comment('Статус'),
-                'percent_eat' => $this->decimal()->null()->comment('Съели (%)'),
-                'state_id' => $this->integer()->null()->comment('Состояние'),
+                'percent_eat' => $this->decimal()->notNull()->defaultValue(0.0)->comment('Съели (%)'),
+                'state_id' => $this->integer()->notNull()->comment('Состояние'),
             ]
         );
 
