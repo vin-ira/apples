@@ -13,6 +13,7 @@ namespace backend\models;
 class Statuses extends \yii\db\ActiveRecord
 {
     const ON_TREE = 1;
+    const ON_GROUND = 2;
 
     /**
      * {@inheritdoc}

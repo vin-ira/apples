@@ -4,9 +4,11 @@ namespace backend\controllers;
 
 use backend\models\Apples;
 use backend\models\ApplesSearch;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\ServerErrorHttpException;
 
 /**
  * ApplesController implements the CRUD actions for Apples model.
@@ -25,6 +27,7 @@ class ApplesController extends Controller
                     'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
+                        'eat' => ['POST'],
                     ],
                 ],
             ]
@@ -121,6 +124,35 @@ class ApplesController extends Controller
         Apples::generate();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionFall($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->fall()) {
+            return $this->redirect('index');
+        }
+
+        return false;
+    }
+
+    public function actionEat()
+    {
+        if (\Yii::$app->request->isPost) {
+            $id = \Yii::$app->request->post('id');
+            $percent = \Yii::$app->request->post('percent');
+
+            $model = $this->findModel($id);
+
+            if ($model->eat($percent)) {
+                return $this->redirect('index');
+            }
+
+            throw new ServerErrorHttpException();
+        }
+
+        throw new BadRequestHttpException();
     }
 
     /**

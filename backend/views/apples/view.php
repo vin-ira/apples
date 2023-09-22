@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var backend\models\Apples $model */
 
-$this->title = $model->id;
+$this->title = $model->id . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Яблоки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -31,12 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'color_id',
-            'created_at',
-            'fall_at',
-            'status_id',
-            'percent_eat',
-            'state_id',
+            'name',
+            'color.name',
+            [
+                'attribute' => 'created_at',
+                'format' => ['date', 'php:d.m.Y H:i:s'],
+            ],
+            [
+                'attribute' => 'fall_at',
+                'format' => ['date', 'php:d.m.Y H:i:s'],
+            ],
+            'status.name',
+            'percent_eat:percent',
+            'state.name',
         ],
     ]) ?>
 

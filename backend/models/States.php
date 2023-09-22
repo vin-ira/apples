@@ -13,6 +13,8 @@ namespace backend\models;
 class States extends \yii\db\ActiveRecord
 {
     const ON_TREE = 1;
+    const ON_GROUND = 2;
+    const ROTTEN = 3;
 
     /**
      * {@inheritdoc}
