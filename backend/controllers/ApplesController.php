@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use backend\models\Apples;
 use backend\models\ApplesSearch;
+use backend\models\States;
+use backend\models\Statuses;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -178,6 +180,23 @@ class ApplesController extends Controller
         }
 
         throw new BadRequestHttpException();
+    }
+
+    public function actionFiveHour()
+    {
+        /** @var Apples[] $fallApples */
+        $fallApples = Apples::find()
+            ->andWhere(['status_id' => Statuses::ON_GROUND])
+            ->andWhere(['<>', 'state_id', States::ROTTEN])
+            ->all();
+
+        foreach ($fallApples as $apple) {
+            $apple->state_id = States::ROTTEN;
+
+            $apple->save();
+        }
+
+        return $this->redirect('index');
     }
 
     /**
