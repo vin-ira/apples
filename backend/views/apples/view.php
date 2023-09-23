@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => ['date', 'php:d.m.Y H:i:s'],
             ],
             'status.name',
-            'percent_eat:percent',
+            'size_percent:percent',
             'state.name',
         ],
     ]) ?>

@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => ['date', 'php:d.m.Y H:i:s'],
             ],
             'status.name',
-            'percent_eat:percent',
+            'size_percent:percent',
             'state.name',
             [
                 'class' => ActionColumn::class,
@@ -119,8 +119,12 @@ $this->registerJs(<<<JS
                 id: $('#model_id').val(),
                 percent: $('#model_percent').val()
             },
-            success: function(result) {
-                $('#modal_eat').modal('hide')
+            success: function(msg) {
+                if (msg) {
+                    alert(msg)  
+                } else {
+                    $('#modal_eat').modal('hide')  
+                }
             }
         });
         

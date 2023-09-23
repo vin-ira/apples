@@ -33,7 +33,7 @@ use yii\jui\DatePicker;
         Statuses::find()->select(['name', 'id'])->indexBy('id')->column()
     ) ?>
 
-    <?= $form->field($model, 'percent_eat')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'size_percent')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'state_id')->dropDownList(
         States::find()->select(['name', 'id'])->indexBy('id')->column()

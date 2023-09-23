@@ -4,11 +4,11 @@ namespace backend\controllers;
 
 use backend\models\Apples;
 use backend\models\ApplesSearch;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\web\ServerErrorHttpException;
 
 /**
  * ApplesController implements the CRUD actions for Apples model.
@@ -23,6 +23,15 @@ class ApplesController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
@@ -119,6 +128,9 @@ class ApplesController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * @return \yii\web\Response
+     */
     public function actionGenerate()
     {
         Apples::generate();
@@ -126,6 +138,13 @@ class ApplesController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * @param $id
+     *
+     * @return false|\yii\web\Response
+     *
+     * @throws NotFoundHttpException
+     */
     public function actionFall($id)
     {
         $model = $this->findModel($id);
@@ -137,11 +156,17 @@ class ApplesController extends Controller
         return false;
     }
 
+    /**
+     * @return string|\yii\web\Response
+     *
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionEat()
     {
         if (\Yii::$app->request->isPost) {
-            $id = \Yii::$app->request->post('id');
-            $percent = \Yii::$app->request->post('percent');
+            $id = (int)\Yii::$app->request->post('id');
+            $percent = (int)\Yii::$app->request->post('percent');
 
             $model = $this->findModel($id);
 
@@ -149,7 +174,7 @@ class ApplesController extends Controller
                 return $this->redirect('index');
             }
 
-            throw new ServerErrorHttpException();
+            return 'Нельзя откусить больше '. ($model->size_percent * 100) .'%!';
         }
 
         throw new BadRequestHttpException();

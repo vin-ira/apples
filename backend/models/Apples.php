@@ -10,7 +10,7 @@ namespace backend\models;
  * @property int $created_at Дата и время появления
  * @property int|null $fall_at Дата и время падения
  * @property int $status_id Статус
- * @property float $percent_eat Съели (%)
+ * @property float $size_percent Размер (%)
  * @property int $state_id Состояние
  * @property string $name Название
  *
@@ -26,7 +26,14 @@ class Apples extends \yii\db\ActiveRecord
     const MIN_CREATE_AT = '01.01.2023';
     const MAX_CREATE_AT = 'now';
 
-    const apples_names = ['красивое', 'очень вкусное', 'сочное', 'спелое', 'кисло-сладкое', 'сладкое'];
+    const APPLES_NAME_LIST = [
+        'красивое',
+        'очень вкусное',
+        'сочное',
+        'спелое',
+        'кисло-сладкое',
+        'сладкое',
+    ];
 
     /**
      * {@inheritdoc}
@@ -44,7 +51,7 @@ class Apples extends \yii\db\ActiveRecord
         return [
             [['color_id', 'created_at', 'status_id', 'state_id', 'name'], 'required'],
             [['color_id', 'created_at', 'fall_at', 'status_id', 'state_id'], 'integer'],
-            [['percent_eat'], 'number'],
+            [['size_percent'], 'number'],
             [['name'], 'string'],
             [
                 ['color_id'],
@@ -82,7 +89,7 @@ class Apples extends \yii\db\ActiveRecord
             'created_at' => 'Дата и время появления',
             'fall_at' => 'Дата и время падения',
             'status_id' => 'Статус',
-            'percent_eat' => 'Съели (%)',
+            'size_percent' => 'Размер (%)',
             'state_id' => 'Состояние',
         ];
     }
@@ -117,6 +124,9 @@ class Apples extends \yii\db\ActiveRecord
         return $this->hasOne(Statuses::class, ['id' => 'status_id']);
     }
 
+    /**
+     * @return void
+     */
     public static function generate(): void
     {
         $colors = Colors::getColorList();
@@ -126,7 +136,7 @@ class Apples extends \yii\db\ActiveRecord
         for ($i = 0; $i < $countApples; $i++) {
             $model = new Apples();
 
-            $model->name = 'Яблоко ' . self::apples_names[array_rand(self::apples_names)];
+            $model->name = 'Яблоко ' . self::APPLES_NAME_LIST[array_rand(self::APPLES_NAME_LIST)];
             $model->color_id = array_rand($colors);
             $model->created_at = rand(strtotime(self::MIN_CREATE_AT), strtotime(self::MAX_CREATE_AT));
             $model->status_id = Statuses::ON_TREE;
@@ -136,16 +146,25 @@ class Apples extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * @return bool
+     */
     public function canFall(): bool
     {
         return $this->status_id == Statuses::ON_TREE;
     }
 
+    /**
+     * @return bool
+     */
     public function canEat(): bool
     {
         return ($this->status_id == Statuses::ON_GROUND) && ($this->state_id !== States::ROTTEN);
     }
 
+    /**
+     * @return bool
+     */
     public function fall(): bool
     {
         if ($this->canFall()) {
@@ -159,10 +178,28 @@ class Apples extends \yii\db\ActiveRecord
         return false;
     }
 
+    /**
+     * @param $percent
+     *
+     * @return bool
+     *
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function eat($percent): bool
     {
         if ($this->canEat()) {
-            $this->percent_eat = $this->percent_eat - ($percent / 100);
+            $new_size = $this->size_percent - ($percent / 100);
+
+            if ($new_size < 0) {
+               return false;
+            }
+
+            $this->size_percent = $new_size;
+
+            if ($new_size == 0) {
+                return $this->delete();
+            }
 
             return $this->save();
         }

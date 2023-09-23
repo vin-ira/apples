@@ -18,7 +18,7 @@ class ApplesSearch extends Apples
         return [
             [['id', 'color_id', 'status_id', 'state_id'], 'integer'],
             [['created_at', 'fall_at'], 'safe'],
-            [['percent_eat'], 'number'],
+            [['size_percent'], 'number'],
         ];
     }
 
@@ -63,7 +63,7 @@ class ApplesSearch extends Apples
             'created_at' => $this->created_at,
             'fall_at' => $this->fall_at,
             'status_id' => $this->status_id,
-            'percent_eat' => $this->percent_eat,
+            'size_percent' => $this->size_percent,
             'state_id' => $this->state_id,
         ]);
 
