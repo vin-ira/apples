@@ -182,7 +182,7 @@ class ApplesController extends Controller
         throw new BadRequestHttpException();
     }
 
-    public function actionFiveHour()
+    public function actionOneHour()
     {
         /** @var Apples[] $fallApples */
         $fallApples = Apples::find()
@@ -191,9 +191,11 @@ class ApplesController extends Controller
             ->all();
 
         foreach ($fallApples as $apple) {
-            $apple->state_id = States::ROTTEN;
+            if ((time() - $apple->fall_at) >= 5 * 3600) {
+                $apple->state_id = States::ROTTEN;
 
-            $apple->save();
+                $apple->save();
+            }
         }
 
         return $this->redirect('index');

@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Добавить яблоко', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Сгенерировать яблоки', ['generate'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Прошло 5 часов', ['five-hour'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Испортилось (раз в час)', ['one-hour'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
