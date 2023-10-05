@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{fall}{eat}',
+                'template' => '{fall}<br>{eat}',
                 'buttons' => [
                     'fall' => function ($url, $model) {
                         if ($model->canFall()) {
