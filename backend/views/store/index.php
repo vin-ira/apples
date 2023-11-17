@@ -1,6 +1,6 @@
 <?php
 
-use app\models\Supprodcnt;
+use app\models\supprodcnt;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -33,13 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'id_s',
             'id_p',
-            'id_m',
             'price_min',
-            //'price_sale',
+            'price_sale',
             //'cnt',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Supprodcnt $model, $key, $index, $column) {
+                'urlCreator' => function ($action, supprodcnt $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

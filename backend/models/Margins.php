@@ -10,6 +10,8 @@ use Yii;
  * @property int $id Идентификатор
  * @property string $type Тип
  * @property float $part Наценка (%)
+ * @property float|null $price_min Мин. цена
+ * @property float|null $price_max Макс. цена
  *
  * @property Supprodcnt[] $supprodcnts
  */
@@ -30,7 +32,7 @@ class Margins extends \yii\db\ActiveRecord
     {
         return [
             [['type'], 'required'],
-            [['part'], 'number'],
+            [['part', 'price_min', 'price_max'], 'number'],
             [['type'], 'string', 'max' => 255],
             [['type'], 'unique'],
         ];
@@ -45,6 +47,8 @@ class Margins extends \yii\db\ActiveRecord
             'id' => 'Идентификатор',
             'type' => 'Тип',
             'part' => 'Наценка (%)',
+            'price_min' => 'Мин. цена',
+            'price_max' => 'Макс. цена',
         ];
     }
 

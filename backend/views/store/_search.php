@@ -24,11 +24,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_p') ?>
 
-    <?= $form->field($model, 'id_m') ?>
-
     <?= $form->field($model, 'price_min') ?>
 
-    <?php // echo $form->field($model, 'price_sale') ?>
+    <?= $form->field($model, 'price_sale') ?>
 
     <?php // echo $form->field($model, 'cnt') ?>
 

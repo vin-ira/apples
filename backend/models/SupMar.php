@@ -5,26 +5,23 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "supprodcnt".
+ * This is the model class for table "sup_mar".
  *
  * @property int $id Идентификатор
  * @property int $id_s Поставщик
- * @property int $id_p Товар
- * @property float|null $price_min Мин. цена
- * @property float|null $price_sale Цена продажи
- * @property int $cnt Кол-во
+ * @property int $id_m Наценка
  *
- * @property Products $p
+ * @property Margins $m
  * @property Suppliers $s
  */
-class Supprodcnt extends \yii\db\ActiveRecord
+class SupMar extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'supprodcnt';
+        return 'sup_mar';
     }
 
     /**
@@ -33,10 +30,9 @@ class Supprodcnt extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_s', 'id_p', 'cnt'], 'required'],
-            [['id_s', 'id_p', 'cnt'], 'integer'],
-            [['price_min', 'price_sale'], 'number'],
-            [['id_p'], 'exist', 'skipOnError' => true, 'targetClass' => Products::class, 'targetAttribute' => ['id_p' => 'id']],
+            [['id_s', 'id_m'], 'required'],
+            [['id_s', 'id_m'], 'integer'],
+            [['id_m'], 'exist', 'skipOnError' => true, 'targetClass' => Margins::class, 'targetAttribute' => ['id_m' => 'id']],
             [['id_s'], 'exist', 'skipOnError' => true, 'targetClass' => Suppliers::class, 'targetAttribute' => ['id_s' => 'id']],
         ];
     }
@@ -49,21 +45,18 @@ class Supprodcnt extends \yii\db\ActiveRecord
         return [
             'id' => 'Идентификатор',
             'id_s' => 'Поставщик',
-            'id_p' => 'Товар',
-            'price_min' => 'Мин. цена',
-            'price_sale' => 'Цена продажи',
-            'cnt' => 'Кол-во',
+            'id_m' => 'Наценка',
         ];
     }
 
     /**
-     * Gets query for [[P]].
+     * Gets query for [[M]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getP()
+    public function getM()
     {
-        return $this->hasOne(Products::class, ['id' => 'id_p']);
+        return $this->hasOne(Margins::class, ['id' => 'id_m']);
     }
 
     /**
