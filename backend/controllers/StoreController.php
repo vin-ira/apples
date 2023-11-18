@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use app\models\Margins;
+use app\models\Suppliers;
 use app\models\supprodcnt;
 use app\models\SupprodcntSearch;
 use yii\web\Controller;
@@ -114,6 +116,33 @@ class StoreController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionCreatePriceSale()
+    {
+        /** @var Supprodcnt[] $supprodcnt */
+        $supprodcnt = Supprodcnt::find()
+            ->all();
+
+        foreach ($supprodcnt as $supprodcntone) {
+            /** @var Supprodcnt $supprodcntone */
+
+            $curmargins = Margins::find()
+                ->leftJoin('sup_mar', 'sup_mar.id_m = margins.id')
+                ->andWhere('sup_mar.id_s = '. $supprodcntone->id_s)
+            ->all();
+
+            foreach ($curmargins as $curmargin) {
+                /** @var Margins $curmargin */
+                if ($supprodcntone->price_min >= $curmargin->price_min && $supprodcntone->price_min <= $curmargin->price_max) {
+                    $supprodcntone->price_sale = $supprodcntone->price_min + $supprodcntone->price_min * $curmargin->part;
+
+                    $supprodcntone->save();
+                }
+            }
+        }
+
+        return $this->redirect('index');
     }
 
     /**
