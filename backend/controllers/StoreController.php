@@ -134,7 +134,7 @@ class StoreController extends Controller
 
             foreach ($curmargins as $curmargin) {
                 /** @var Margins $curmargin */
-                if ($supprodcntone->price_min >= $curmargin->price_min && $supprodcntone->price_min <= $curmargin->price_max) {
+                if ($supprodcntone->price_min >= $curmargin->price_min && ($supprodcntone->price_min <= $curmargin->price_max || $curmargin->price_max == '' ||  is_null($curmargin->price_max))) {
                     $supprodcntone->price_sale = $supprodcntone->price_min + $supprodcntone->price_min * $curmargin->part;
 
                     $supprodcntone->save();
